@@ -1,0 +1,124 @@
+---
+title: "Introduction to StatComp22017"
+author: "Ziqiao Zhou"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to StatComp22017}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+
+__StatComp22017__ is a simple R package developed for the final project of the 'Statistical Computing' course. This package contains several R and Rcpp functions to get survival analysis results of datasets and fit several models to compare the differences between models.This file will introduce these functions and provide some examples for usage.
+
+## SAIDP
+
+肿瘤浸润性淋巴细胞(TIL)作为多种肿瘤的免疫反应和预后的重要替代生物标志物，近年来越来越受到人们的关注。在一些癌症的预后上，TIL已经取得了显著的预后作用。通过深度学习的方法得到TIL得分后，可以对其做进一步的生存分析，通过TIL得分来预测病人的生存情况。
+
+这个函数中需要输入data（包含了数据集中每个患者的基本信息，如生存时间、生存状态、年龄等），data2（通过神经网络模型得到的病人的TIL相关信息），cutpoint（决定了相应数据集TIL得分高低的分割点）。
+
+example:
+
+```{r}
+#load('../data/data.rda') #data
+#load('../data/data2.rda') #data2
+#cutpoint <- 0.0002820585
+#SAIDP(data=data, data2=data2, cutpoint=0.0002820585)
+```
+
+## til
+
+```{Rcpp}
+#include <Rcpp.h>
+using namespace Rcpp;
+
+// [[Rcpp::export]]
+double til(double LYM, double STR, double TUM, double TIL3, double TIL7, double TIL8){
+  double k3 = LYM / (STR+TUM+LYM);
+  double k7 = STR / (STR+TUM+LYM);
+  double k8 = TUM / (STR+TUM+LYM);
+  double til_t = k3*TIL3+k7*TIL7+k8*TIL8;
+  return til_t;
+}
+```
+
+## fit_continuous
+
+在数字病理学中，为了比较不同特征提取器的特征提取能力，需要利用多种特征对各种基因表达进行预测。这是会多次重复的实验，所以设计了函数fit_continuous帮助我们完成数据集的分割和模型的拟合，最终输出MSEs和模型结果，绘制预测结果和真实值的散点图。
+
+这个函数中已经包含的模型包括LM和SVM。data的要求就是一个dataframe，前几都为特征，最后一列是标签。frac为训练集和测试集的比例，默认将两者按4：1切割。models可以使用c("LM","SVM")的任意子集，可以得到LM和SVM拟合模型的结果。
+
+```{r}
+library(e1071)
+```
+
+```{r}
+# fit_continuous(
+#   data,
+#   frac = 0.8,
+#   models = c("LM","SVM"),
+# )
+fit_continuous <- function(data, frac=0.8, models=c("LM","SVM")){
+  set.seed(516)
+  # split train data and test data
+  y = 0 
+  m <- nrow(data)
+  n <- ncol(data)
+  colnames(data) <- c(paste0('v',1:(n-1)),'y')
+  train_index <- sample(c(1:m), floor(frac*m))
+  train_data <- data[train_index,]
+  test_data <- data[-train_index,]
+  
+  MSE <- function(pred,true){mean((pred-true)^2)}
+  MSEs <- c()
+  row_names <- c()
+  model = list()
+  
+  if("LM" %in% models){
+    model_lm <- lm(y~., data = train_data)
+    pred_lm <- predict(model_lm, test_data)
+    MSE_lm <- MSE(pred_lm,test_data$y)
+    plot(test_data$y, pred_lm, main="LM", xlab="Ground Truth", ylab="Prediction")
+    abline(0, 1, col="orange")
+    MSEs <- c(MSEs, MSE_lm)
+    row_names <- c(row_names, "LM")
+    model1 <- list(model_lm)
+    model <- append(model, model1)
+  }
+  
+  if("SVM" %in% models){
+    model_svm <- svm(y~., train_data, type="eps-regression", kernel="linear")
+    pred_svm <- predict(model_svm, test_data)
+    MSE_svm <- MSE(pred_svm, test_data$y)
+    plot(pred_svm, test_data$y, main="SVR", xlab="Ground Truth", ylab="Prediction")
+    abline(0, 1, col="orange")
+    MSEs <- c(MSEs, MSE_svm)
+    row_names <- c(row_names, "SVM")
+    model2 <- list(model_svm)
+    model <- append(model, model2)
+  }
+  
+  MSES <- data.frame(model=row_names, MSE=MSEs)
+  return(list(MSES,model))
+}
+```
+
+example:
+
+```{r}
+set.seed(516)
+x1 <- 1:100
+x2 <- seq(2, 18, length.out=100) + rnorm(100, 3, 4)
+y <- 4*x1 - 3*x2 + rnorm(100, 0, 2)
+data <- data.frame(x1=x1, x2=x2, y=y)
+results <- fit_continuous(data, frac=0.8, c("LM","SVM"))
+results[[1]]
+results[[2]][1]
+```
+

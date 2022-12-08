@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Ziqiao Zhou" />
+
+<meta name="date" content="2022-12-08" />
+
+<title>Introduction to StatComp22017</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Introduction to StatComp22017</h1>
+<h4 class="author">Ziqiao Zhou</h4>
+<h4 class="date">2022-12-08</h4>
+
+
+
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p><strong>StatComp22017</strong> is a simple R package developed for
+the final project of the ‘Statistical Computing’ course. This package
+contains several R and Rcpp functions to get survival analysis results
+of datasets and fit several models to compare the differences between
+models.This file will introduce these functions and provide some
+examples for usage.</p>
+</div>
+<div id="saidp" class="section level2">
+<h2>SAIDP</h2>
+<p>肿瘤浸润性淋巴细胞(TIL)作为多种肿瘤的免疫反应和预后的重要替代生物标志物，近年来越来越受到人们的关注。在一些癌症的预后上，TIL已经取得了显著的预后作用。通过深度学习的方法得到TIL得分后，可以对其做进一步的生存分析，通过TIL得分来预测病人的生存情况。</p>
+<p>这个函数中需要输入data（包含了数据集中每个患者的基本信息，如生存时间、生存状态、年龄等），data2（通过神经网络模型得到的病人的TIL相关信息），cutpoint（决定了相应数据集TIL得分高低的分割点）。</p>
+<p>example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#load(&#39;../data/data.rda&#39;) #data</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#load(&#39;../data/data2.rda&#39;) #data2</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#cutpoint &lt;- 0.0002820585</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#SAIDP(data=data, data2=data2, cutpoint=0.0002820585)</span></span></code></pre></div>
+</div>
+<div id="til" class="section level2">
+<h2>til</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Rcpp.h&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">using</span> <span class="kw">namespace</span> Rcpp<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">// [[Rcpp::export]]</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="dt">double</span> til<span class="op">(</span><span class="dt">double</span> LYM<span class="op">,</span> <span class="dt">double</span> STR<span class="op">,</span> <span class="dt">double</span> TUM<span class="op">,</span> <span class="dt">double</span> TIL3<span class="op">,</span> <span class="dt">double</span> TIL7<span class="op">,</span> <span class="dt">double</span> TIL8<span class="op">){</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">double</span> k3 <span class="op">=</span> LYM <span class="op">/</span> <span class="op">(</span>STR<span class="op">+</span>TUM<span class="op">+</span>LYM<span class="op">);</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">double</span> k7 <span class="op">=</span> STR <span class="op">/</span> <span class="op">(</span>STR<span class="op">+</span>TUM<span class="op">+</span>LYM<span class="op">);</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="dt">double</span> k8 <span class="op">=</span> TUM <span class="op">/</span> <span class="op">(</span>STR<span class="op">+</span>TUM<span class="op">+</span>LYM<span class="op">);</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="dt">double</span> <span class="dt">til_t</span> <span class="op">=</span> k3<span class="op">*</span>TIL3<span class="op">+</span>k7<span class="op">*</span>TIL7<span class="op">+</span>k8<span class="op">*</span>TIL8<span class="op">;</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="dt">til_t</span><span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+</div>
+<div id="fit_continuous" class="section level2">
+<h2>fit_continuous</h2>
+<p>在数字病理学中，为了比较不同特征提取器的特征提取能力，需要利用多种特征对各种基因表达进行预测。这是会多次重复的实验，所以设计了函数fit_continuous帮助我们完成数据集的分割和模型的拟合，最终输出MSEs和模型结果，绘制预测结果和真实值的散点图。</p>
+<p>这个函数中已经包含的模型包括LM和SVM。data的要求就是一个dataframe，前几都为特征，最后一列是标签。frac为训练集和测试集的比例，默认将两者按4：1切割。models可以使用c(“LM”,“SVM”)的任意子集，可以得到LM和SVM拟合模型的结果。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span></code></pre></div>
+<pre><code>## Warning: package &#39;e1071&#39; was built under R version 4.2.2</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># fit_continuous(</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   data,</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   frac = 0.8,</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   models = c(&quot;LM&quot;,&quot;SVM&quot;),</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>fit_continuous <span class="ot">&lt;-</span> <span class="cf">function</span>(data, <span class="at">frac=</span><span class="fl">0.8</span>, <span class="at">models=</span><span class="fu">c</span>(<span class="st">&quot;LM&quot;</span>,<span class="st">&quot;SVM&quot;</span>)){</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">set.seed</span>(<span class="dv">516</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># split train data and test data</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  y <span class="ot">=</span> <span class="dv">0</span> </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  m <span class="ot">&lt;-</span> <span class="fu">nrow</span>(data)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">ncol</span>(data)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(data) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">paste0</span>(<span class="st">&#39;v&#39;</span>,<span class="dv">1</span><span class="sc">:</span>(n<span class="dv">-1</span>)),<span class="st">&#39;y&#39;</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>  train_index <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span>m), <span class="fu">floor</span>(frac<span class="sc">*</span>m))</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  train_data <span class="ot">&lt;-</span> data[train_index,]</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  test_data <span class="ot">&lt;-</span> data[<span class="sc">-</span>train_index,]</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  MSE <span class="ot">&lt;-</span> <span class="cf">function</span>(pred,true){<span class="fu">mean</span>((pred<span class="sc">-</span>true)<span class="sc">^</span><span class="dv">2</span>)}</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  MSEs <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  row_names <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  model <span class="ot">=</span> <span class="fu">list</span>()</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="st">&quot;LM&quot;</span> <span class="sc">%in%</span> models){</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    model_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>., <span class="at">data =</span> train_data)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    pred_lm <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_lm, test_data)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>    MSE_lm <span class="ot">&lt;-</span> <span class="fu">MSE</span>(pred_lm,test_data<span class="sc">$</span>y)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(test_data<span class="sc">$</span>y, pred_lm, <span class="at">main=</span><span class="st">&quot;LM&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Ground Truth&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Prediction&quot;</span>)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">abline</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">col=</span><span class="st">&quot;orange&quot;</span>)</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>    MSEs <span class="ot">&lt;-</span> <span class="fu">c</span>(MSEs, MSE_lm)</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    row_names <span class="ot">&lt;-</span> <span class="fu">c</span>(row_names, <span class="st">&quot;LM&quot;</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    model1 <span class="ot">&lt;-</span> <span class="fu">list</span>(model_lm)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    model <span class="ot">&lt;-</span> <span class="fu">append</span>(model, model1)</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="st">&quot;SVM&quot;</span> <span class="sc">%in%</span> models){</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    model_svm <span class="ot">&lt;-</span> <span class="fu">svm</span>(y<span class="sc">~</span>., train_data, <span class="at">type=</span><span class="st">&quot;eps-regression&quot;</span>, <span class="at">kernel=</span><span class="st">&quot;linear&quot;</span>)</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    pred_svm <span class="ot">&lt;-</span> <span class="fu">predict</span>(model_svm, test_data)</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    MSE_svm <span class="ot">&lt;-</span> <span class="fu">MSE</span>(pred_svm, test_data<span class="sc">$</span>y)</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">plot</span>(pred_svm, test_data<span class="sc">$</span>y, <span class="at">main=</span><span class="st">&quot;SVR&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Ground Truth&quot;</span>, <span class="at">ylab=</span><span class="st">&quot;Prediction&quot;</span>)</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">abline</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">col=</span><span class="st">&quot;orange&quot;</span>)</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>    MSEs <span class="ot">&lt;-</span> <span class="fu">c</span>(MSEs, MSE_svm)</span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>    row_names <span class="ot">&lt;-</span> <span class="fu">c</span>(row_names, <span class="st">&quot;SVM&quot;</span>)</span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>    model2 <span class="ot">&lt;-</span> <span class="fu">list</span>(model_svm)</span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>    model <span class="ot">&lt;-</span> <span class="fu">append</span>(model, model2)</span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>  MSES <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">model=</span>row_names, <span class="at">MSE=</span>MSEs)</span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(MSES,model))</span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>example:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">516</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>x1 <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>x2 <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">18</span>, <span class="at">length.out=</span><span class="dv">100</span>) <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">4</span><span class="sc">*</span>x1 <span class="sc">-</span> <span class="dv">3</span><span class="sc">*</span>x2 <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">0</span>, <span class="dv">2</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x1=</span>x1, <span class="at">x2=</span>x2, <span class="at">y=</span>y)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">fit_continuous</span>(data, <span class="at">frac=</span><span class="fl">0.8</span>, <span class="fu">c</span>(<span class="st">&quot;LM&quot;</span>,<span class="st">&quot;SVM&quot;</span>))</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>results[[<span class="dv">1</span>]]</span></code></pre></div>
+<pre><code>##   model       MSE
+## 1    LM  3.450387
+## 2   SVM 28.609656</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>results[[<span class="dv">2</span>]][<span class="dv">1</span>]</span></code></pre></div>
+<pre><code>## [[1]]
+## 
+## Call:
+## lm(formula = y ~ ., data = train_data)
+## 
+## Coefficients:
+## (Intercept)           v1           v2  
+##      0.5537       3.9997      -3.0178</code></pre>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
