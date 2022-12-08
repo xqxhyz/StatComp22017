@@ -1,0 +1,16 @@
+Package: StatComp22017
+Type: Package
+Title: Functions in R and Rcpp for digital pathology and 'Statistical Computing' course
+Version: 1.0
+Date: 2022-12-06
+Author: Ziqiao Zhou
+Maintainer: Ziqiao Zhou <zzq2001@mail.ustc.edu.cn>
+Description: Several R and Rcpp functions for digital pathology and statistical computing are included in the package.
+License: GPL (>= 2)
+Imports: Rcpp, microbenchmark, knitr, rmarkdown, DT, ggplot2, survival, survminer, boot, bootstrap, DAAG, latex2exp, scales, pander, e1071, stats, graphics
+LinkingTo: Rcpp
+RoxygenNote: 7.2.2
+Encoding: UTF-8
+VignetteBuilder: knitr
+URL: http://github.com/xqxhyz/StatComp22017
+BugReports: http://github.com/xqxhyz/StatComp22017/issues
